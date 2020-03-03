@@ -1,0 +1,6 @@
+﻿  Database.cpp
+C:\Users\Hunter\source\repos\Database\Database\Database.cpp(82,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Hunter\source\repos\Database\Database\Database.cpp(203,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Hunter\source\repos\Database\Database\Database.cpp(381,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Hunter\source\repos\Database\Database\Database.cpp(388,28): warning C4018: '<': signed/unsigned mismatch
+  Database.vcxproj -> C:\Users\Hunter\source\repos\Database\Debug\Database.exe
