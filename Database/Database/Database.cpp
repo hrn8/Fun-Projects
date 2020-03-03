@@ -1,5 +1,11 @@
-// Database.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+/**
+    Employee Database
+    Database.cpp
+    Purpose: Mimics a database system, allows a verified admin to login and access the Employee Data
+
+    @author Hunter Noey
+    @version 1.1 3/1/20 
+*/
 
 #include "Employee.h"
 #include <iostream>
@@ -9,6 +15,15 @@
 #include <string>
 #include <algorithm>
 
+/**
+    Validates if an Employee exists in the Database.
+
+    @param 
+    EmployeeRecords: The database containing the Employee data
+    tempID: The ID being searched in the database.
+    @return The Employee's status in the database
+*/
+
 bool isInDataBase(vector<Employee> EmployeeRecords, int tempID) {
 
     for (Employee e : EmployeeRecords) {
@@ -16,6 +31,13 @@ bool isInDataBase(vector<Employee> EmployeeRecords, int tempID) {
     }
     return true;
 }
+
+/**
+    Adds a user to the current database.
+
+    @param 
+    EmployeeRecords: The database containing the Employee data
+*/
 
 void addEmployee(vector<Employee> &EmployeeRecords) {
     string fN, lN;
@@ -58,6 +80,13 @@ void addEmployee(vector<Employee> &EmployeeRecords) {
     std::cout << "The Employee has been entered into the database.\n\n";
 }
 
+/**
+    Removes a user in the current database, assuming their ID is within the database.
+
+    @param 
+    EmployeeRecords: The database containing the Employee data
+*/
+
 void deleteFromDatabase(vector<Employee> &EmployeeRecords) {
     int tempID; 
     std::cout << "Enter the ID of the Employee you want to delete: ";
@@ -73,6 +102,13 @@ void deleteFromDatabase(vector<Employee> &EmployeeRecords) {
 
     std::cout << "The Employee does not exist.\n\n";
 }
+
+/**
+    Displays the users within the database
+
+    @param 
+    EmployeeRecords: The database containing the Employee data
+*/
 
 void displayEmployeeData(vector<Employee> EmployeeRecords) {
     std::cout << "----------------------------------------------------------------------------\n";
@@ -102,6 +138,13 @@ void displayEmployeeData(vector<Employee> EmployeeRecords) {
 
     std::cout << endl << endl;
 }
+
+/**
+    Searches a user in the current database, displays their data if they are in the database.
+
+    @param 
+    EmployeeRecords: The database containing the Employee data
+*/
 
 void searchUser(vector<Employee> EmployeeRecords) {
     int tempID;
@@ -140,21 +183,55 @@ void searchUser(vector<Employee> EmployeeRecords) {
     std::cout << "The Employee does not exist.\n\n";
 }
 
+/**
+    Sorts two Employees based on ID
+
+    @param 
+    EmployeeA, EmployeeB
+    @return The Employee's sorted by highest ID
+*/
+
 bool byID(Employee A, Employee B) {
     return A.getID() > B.getID();
 }
+
+/**
+    Sorts two Employees based on first name
+
+    @param 
+    EmployeeA, EmployeeB
+    @return The Employee's sorted alpabedically by first name
+*/
 
 bool byFN(Employee A, Employee B) {
     return A.getFirstName() < B.getFirstName();
 }
 
+/**
+    Sorts two Employees based on last name
+
+    @param 
+    EmployeeA, EmployeeB
+    @return The Employee's sorted alpabedically by last name
+*/
+
 bool byLN(Employee A, Employee B) {
     return A.getLastName() < B.getLastName();
 }
 
+/**
+    Sorts two Employees based on Salary
+
+    @param 
+    EmployeeA, EmployeeB
+    @return The Employee's sorted by highest Salary
+*/
+
 bool bySalary(Employee A, Employee B) {
     return A.getsalary() > B.getsalary();
 }
+
+(Likely a scrapped feature)
 
 bool byStrikes(Employee A, Employee B) {
     return A.getStrikes() > B.getStrikes();
@@ -193,6 +270,13 @@ void sortDatabase(vector<Employee>& EmployeeRecords) {
 
     std::cout << "The Database has been sorted.\n\n";
 }
+
+/**
+    Modifies an existing user in the current database.
+
+    @param 
+    EmployeeRecords: The database containing the Employee data
+*/
 
 void modifyUser(vector<Employee> &EmployeeRecords) {
     
