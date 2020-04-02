@@ -46,7 +46,6 @@ public class Nonogram implements Serializable{
         if(Arrays.deepEquals(this.markers, Checker))
             return true;
         
-        System.out.println("FALSE");
         return false;
     }
     
@@ -74,13 +73,9 @@ public class Nonogram implements Serializable{
         return this.LengthData[rowIndex][colIndex];
     }
     
-    public void getData(){
-        for(int i = 0; i < this.getLength(); i++){
-            for(int k = 0; k < this.getWidth(); k++)
-                System.out.print(markers[i][k] + " ");
-        }
-        
-        System.out.println();
+    @Override
+    public String toString(){
+        return this.name;
     }
     
 }
