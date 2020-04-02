@@ -130,7 +130,7 @@ public class FinalMenu extends Application{
         //Opening the file with the presaved Nonograms
         ObjectInputStream fileIn = null;
         try {
-            fileIn = new ObjectInputStream(new FileInputStream("output.dat"));
+            fileIn = new ObjectInputStream(new FileInputStream("C://Users//Hunter//Desktop//NonogramAlpha//output.dat"));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
