@@ -1,0 +1,364 @@
+*{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	text-decoration: none;
+}
+
+img {
+  border-radius: 50%;
+  vertical-align: middle;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+body{
+	background-image: url('https://wallpapercave.com/wp/gfwPusm.jpg');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+	
+	margin: 0;
+	
+	}
+
+.header{
+	width: 100%;
+	height: 80px;
+	display: block;
+	background-color: black;
+	
+}
+
+.header2{
+	float: left;
+	width: 280px;
+	height: 60%;
+    display: block;
+	line-height: 1.8;
+	position: relative;
+	
+	
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #008CBA;
+}
+
+.container:hover .overlay {
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.blinking{
+	animation:blinkingText 1.0s;
+}
+@keyframes blinkingText{
+	0%{		color: #000;	}
+	49%{	color: transparent;	}
+	50%{	color: transparent;	}
+	99%{	color:transparent;	}
+	100%{	color: #000;	}
+}
+
+.inner_header{
+	width: 900px;
+	height: 90%;
+	display: block;
+	margin: 0 auto;
+}
+
+.logo_container{
+	height: 100%;
+	display: table;
+	float: left;
+}
+
+.logo_container h1{
+	color: white;
+	height: 100%;
+	display: table-cell;
+	vertical-align: middle;
+	font-size: 32px;
+	font-family: Oxanium;
+	font-weight: 200;
+}
+
+.logo_container h1 span{
+	font-weight: 800;
+}
+
+.navigation{
+	float: right;
+	height: 100%;
+}
+
+.navigation a{
+	height: 100%;
+	display: table;
+	float: left;
+	padding: 0px 20px;
+}
+
+.navigation a li{
+	display: table-cell;
+	vertical-align: middle;
+	color: white;
+	font-family: Oxanium;
+	font-size: 20px;
+}
+
+.navigation a:last-child{
+	padding-right: 0;
+}
+
+.masthead-intro {
+  text-align: center;
+}
+
+.masthead-intro {
+    /* Layout Declarations */
+    margin-bottom: 0.1em;
+    /* Typography Declarations */
+    font-family: "Gentium Book Basic", Georgia, serif;
+    font-size: 2em;
+}
+
+.masthead-heading {
+    /* Layout Declarations */
+    color: #F1C863;
+    margin-top: -0.2em;
+    /* Typography Declarations */
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    font-size: 6em;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+
+
+
+.content-footer,
+.masthead-heading,
+.masthead-intro {
+  text-align: center;
+}
+
+.masthead {
+  padding: 6em 0;
+  background-image: url('https://i.imgur.com/yGmrlyg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-top: solid 1em #FFCF33;
+}
+
+.masthead-intro {
+    /* Layout Declarations */
+    margin-bottom: 0.1em;
+    /* Typography Declarations */
+    font-family: "Gentium Book Basic", Georgia, serif;
+    font-size: 2em;
+}
+
+.masthead-heading {
+    /* Layout Declarations */
+    color: #F1C863;
+    margin-top: -0.2em;
+    /* Typography Declarations */
+    font-family: "Open Sans", "Helvetica Neue", sans-serif;
+    font-weight: bold;
+    font-size: 6em;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+
+
+
+#title > h1 {
+  color: white;
+  font-family: Oxanium;
+  margin: 0;
+}
+
+.set{
+position: absolute;
+  top: 80px;
+  left: 400;
+  color: white;
+  font-family: Oxanium;
+  margin: 0;
+  font-size: 3em;
+}
+
+.BODY{
+	position: relative;
+	right: 100;
+	max-width: 800px;
+	padding-left: 40px;
+	padding-right: 40px;
+	margin: 50;
+	font-size: 16;
+	line-height: 1.3;
+}
+
+.TITLE{
+	float: center;
+	position: middle;
+	text-align: middle;
+	color: white;
+	font-family: Oxanium;
+	margin: 0;
+	font-size: 20;
+}
+
+.SUB{
+	text-align: center;
+	font-size: 15;
+	line-height: 1.2;
+}
+
+.HEADS{
+	
+	line-height: 2.2;
+	
+}
+
+a:link {
+  color: white;
+}
+
+a:visited {
+  color: white;
+}
+
+.SONGS{
+	line-height: 2.2;
+	position: relative;
+	
+	 
+	width: 800px;
+	  height: 800px;
+	
+	
+}
+
+#img{
+  position: relative;
+  right:-20px;
+  margin: left;
+  }
+  
+  .cat{
+	  width: 100px;
+	  height: 100px;
+	  position: relative;
+	  top: -15px;
+	  right: -120px;
+  }
+  
+  .GPS{
+	  background: url("green.png") no-repeat;
+	  border-radius: 100%;
+	  width: 30px;
+	  height: 30px;
+	  position: relative;
+	  right:-20px;
+	  margin: left;
+	   bottom: -5px;
+	}
+	
+	.GPS:hover{
+		border-color: #66afe9;
+		box-shadow: 0 0 8px rgba(0,255,0, 0.6);
+		background: url("green.png") no-repeat;
+	}
+  
+  .EMAIL{
+	  border-radius: 100%;
+	  width: 30px;
+	  height: 30px;
+	  position: relative;
+	  right:-20px;
+	  margin: left;
+	  bottom: -5px;
+  }
+  
+  .EMAIL:hover{
+		border-color: #66afe9;
+		box-shadow: 0 0 8px rgba(255, 255, 255, 255);
+		
+	}
+  
+  .FACEBOOK{
+	  border-radius: 100%;
+	  width: 30px;
+	  height: 30px;
+	  position: relative;
+	  right:-20px;
+	  bottom: -5px;
+	  margin: left;
+
+  }
+  
+  .FACEBOOK:hover{
+		border-color: #66afe9;
+		box-shadow: 0 0 8px rgba(48, 82, 182);
+		
+	}
+  
+  .GIT{
+	  width: 30px;
+	  height: 30px; 
+	  position: relative;
+	  right:-20px;
+	  margin: left;
+	  bottom: -5px;
+  }
+  
+  .GIT:hover{
+		border-color: #66afe9;
+		box-shadow: 0 0 8px rgba(29, 189, 38);
+		
+	}
+	
+  .fever{
+	  width: 30px;
+	  height: 30px;
+	  display: block;
+	  border-radius: 0%;
+	  left: 250px;
+	  position: relative;
+	  -webkit-transition: -webkit-transform 0.8s ease-in-out;
+      transition: transform 0.8s ease-in-out;
+	  
+  }
+  
+  .fever:hover{
+	   -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+  }
+ 
+
+
