@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,10 +44,15 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Vector;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.embed.swing.SwingNode;
+import javafx.scene.control.CheckBox;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -65,10 +73,13 @@ public class FinalMenu extends Application{
     Stage Window;
     Scene scene1, scene2, optionScene, scoreScene, menuScene, musicScene, playScene, createScene, startScene, generateScene;
     
-    static Clip currentSound, officialSong, officialSong1AS, officialSong2AS, officialSong3AS, officialSong4AS, officialSong5AS, officialSong6AS, officialOk, officialToggle, officialBack;
+    static Clip currentSound, officialSong, officialSong1AS, officialSong2AS, officialSong3AS, officialSong4AS, officialSong5AS, officialSong6AS, officialOk, officialToggle, officialBack, officialmissionFailed, officialhitMarker;
     
     String officialNonogramName;
     Nonogram officialNonogram;
+    
+    boolean HardCoreEnabled;
+    int lives = 0;
    
     public static void main(String args[]){
         launch(args); 
@@ -76,26 +87,42 @@ public class FinalMenu extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
+        //"C:\\Users\\Hunter\\Desktop\\NonogramAlpha"
+        //revolution = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("REVOLUTION.ttf"));
         try {
             GraphicsEnvironment ge = 
             GraphicsEnvironment.getLocalGraphicsEnvironment();
-            mostWazted = Font.createFont(Font.TRUETYPE_FONT, new File("C://Windows//Fonts/Mostwasted.ttf")).deriveFont(30f);
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("C://Windows//Fonts/Mostwasted.ttf")));
+            mostWazted = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/OtherFiles/Mostwasted.ttf")).deriveFont(30f);
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/OtherFiles/Mostwasted.ttf")));
         } catch (IOException|FontFormatException e) {
             System.out.println(e);
         }
         
-        //importing the music
-        AudioInputStream officialSong1 = AudioSystem.getAudioInputStream(new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/melee.wav"));
-        AudioInputStream officialSong2 = AudioSystem.getAudioInputStream(new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/meee.wav"));
-        AudioInputStream officialSong3 = AudioSystem.getAudioInputStream(new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/flat.wav"));
-        AudioInputStream officialSong4 = AudioSystem.getAudioInputStream(new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/Menu1.wav"));
-        AudioInputStream officialSong5 = AudioSystem.getAudioInputStream(new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/Boss.wav"));
-        AudioInputStream officialSong6 = AudioSystem.getAudioInputStream(new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/Attack.wav"));
-        AudioInputStream toggle = AudioSystem.getAudioInputStream(new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/menu-toggle.wav"));
-        AudioInputStream ok = AudioSystem.getAudioInputStream(new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/menu-ok.wav"));
-        AudioInputStream back = AudioSystem.getAudioInputStream(new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/menu-back.wav"));
+        
+        
+        URL Song1URL = getClass().getResource("melee.wav");
+        URL Song2URL = getClass().getResource("meee.wav");
+        URL Song3URL = getClass().getResource("flat.wav");
+        URL Song4URL = getClass().getResource("Menu1.wav");
+        URL Song5URL = getClass().getResource("Boss.wav");
+        URL Song6URL = getClass().getResource("Attack.wav");
+        URL ToggleURL = getClass().getResource("menu-toggle.wav");
+        URL OkURL = getClass().getResource("menu-ok.wav");
+        URL BackURL = getClass().getResource("menu-back.wav");
+        URL hitmarkerURL = getClass().getResource("hitmarker.wav");
+        URL missionFailedURL = getClass().getResource("missionfailed.wav");
+        
+        AudioInputStream officialSong1 = AudioSystem.getAudioInputStream(Song1URL);
+        AudioInputStream officialSong2 = AudioSystem.getAudioInputStream(Song2URL);
+        AudioInputStream officialSong3 = AudioSystem.getAudioInputStream(Song3URL);
+        AudioInputStream officialSong4 = AudioSystem.getAudioInputStream(Song4URL);
+        AudioInputStream officialSong5 = AudioSystem.getAudioInputStream(Song5URL);
+        AudioInputStream officialSong6 = AudioSystem.getAudioInputStream(Song6URL);
+        AudioInputStream toggle = AudioSystem.getAudioInputStream(ToggleURL);
+        AudioInputStream ok = AudioSystem.getAudioInputStream(OkURL);
+        AudioInputStream back = AudioSystem.getAudioInputStream(BackURL);
+        AudioInputStream hitmarker = AudioSystem.getAudioInputStream(hitmarkerURL);
+        AudioInputStream missionFailed = AudioSystem.getAudioInputStream(missionFailedURL);
         
         //Allowing the music to be played
         officialSong = AudioSystem.getClip();
@@ -117,6 +144,10 @@ public class FinalMenu extends Application{
         officialOk.open(ok);
         officialBack = AudioSystem.getClip();
         officialBack.open(back);
+        officialhitMarker = AudioSystem.getClip();
+        officialhitMarker.open(hitmarker);
+        officialmissionFailed = AudioSystem.getClip();
+        officialmissionFailed.open(missionFailed);
         
         //Initial Song set to Flat Zone (officialSong3AS
         officialSong = officialSong3AS;
@@ -127,18 +158,35 @@ public class FinalMenu extends Application{
         Vector<Nonogram> dataHolder = new Vector<Nonogram>();
         Vector<String> NonogramNameHolder = new Vector<String>();
                 
-        //Opening the file with the presaved Nonograms
+        boolean fileOpened = true;
         ObjectInputStream fileIn = null;
         try {
-            fileIn = new ObjectInputStream(new FileInputStream("C://Users//Hunter//Desktop//NonogramAlpha//output.dat"));
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            //myClass.getResourceAsStream("file.txt")
+            InputStream in = getClass().getResourceAsStream("/OtherFiles/output.dat");
+            //FileInputStream inputStream = new FileInputStream(new File("C:\\Users\\Hunter\\Desktop\\NonogramAlpha\\output.dat"));
+            //InputStream inputStream = getClass().getResourceAsStream("output.dat");
+            //ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
+             fileIn = new ObjectInputStream(in);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            fileOpened = false;
+            boolean[][] temp = new boolean[1][1];
+            temp[0][0] = true;
+            int[][] tempData = new int[1][1];
+            tempData[0][0] = 1;
+            int[][] tempData2 = new int[1][1];
+            tempData[0][0] = 1;
+            Nonogram tempNono = new Nonogram("FileFailed", temp, 1, 1, tempData, tempData, 1, 1);
+            dataHolder.add(tempNono);
+            NonogramNameHolder.add(tempNono.toString());
+        }
+        finally{
+            System.out.println("Program recovered!");
         }
         
         //Reads in the presaved Nonograms       
-        boolean check=true;
+       if(fileOpened){
+            boolean check=true;
         while (check) {
         try{
             Nonogram tempNono = (Nonogram)fileIn.readObject();
@@ -154,13 +202,14 @@ public class FinalMenu extends Application{
             }
         }
         
-        //closes the file
+         //closes the file
         try {
             fileIn.close();
         } catch (IOException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
-                
+       }
+        
         //Initial Nonogram is set to the first one in dataHolder
         officialNonogram = dataHolder.get(0);
         
@@ -178,11 +227,12 @@ public class FinalMenu extends Application{
         });
         
         //Reading in the backgrounds (as files) to be converted into Backgrounds
-        File file = new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/nonogram_promo_bw.jpg"); 
-        File file2 = new File("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/background.gif");
+        URL file = getClass().getResource("nonogram_promo_bw.jpg");
+        URL file2 = getClass().getResource("background.gif");
         
         //Image Conversion for Program Title
-        Image img = new Image(new FileInputStream(file));
+        BufferedImage image = ImageIO.read(file);
+        Image img = SwingFXUtils.toFXImage(image, null);
         Image NonogramNanic = new Image("https://txt-dynamic.static.1001fonts.net/txt/dHRmLjcyLjAwMDAwMC5UbTl1YjJkeVlXMGdUbUZ1YVdNLC4wAA,,/most-wazted.regular.png");
         ImageView NonogramNanicIV = new ImageView(NonogramNanic);
         NonogramNanicIV.setX(86);
@@ -360,11 +410,11 @@ public class FinalMenu extends Application{
         HardCoreBioDataIV.setY(290);
         
         //Image Conversion for Hardcore disabled (in Solve Nonogram, mode is currently disabled)
-        Image disabled = new Image("https://txt-dynamic.static.1001fonts.net/txt/dHRmLjcyLjAwMDAwMC5MVU4xY25KbGJuUnNlU0JrYVhOaFlteGxaQ0JtYjNJZ1FXeHdhR0VnUW5WcGJHUSwuMAAAAAAAAAAA/most-wazted.regular.png");
+        Image disabled = new Image("https://txt-dynamic.static.1001fonts.net/txt/dHRmLjcyLjAwMDAwMC5MVkpsWkNCdFlYSnJaWEp6SUdsdVpHbGpZWFJsSUdFZ2QzSnZibWNnYldGeWEyVnkuMAAA/most-wazted.regular.png");
         ImageView disabledIV = new ImageView(disabled);
         disabledIV.setScaleX(.3);
         disabledIV.setScaleY(.3);
-        disabledIV.setX(-310);
+        disabledIV.setX(-362);
         disabledIV.setY(320);
         
         //Image Conversion for Generating a Nonogram (in Solve Nonogram)
@@ -380,7 +430,14 @@ public class FinalMenu extends Application{
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false));
         Background bg = new Background(bgImg);
-        Image MainBackground = new Image(new FileInputStream(file2));
+        
+        
+        
+        URL url = new URL("http://www.digitalphotoartistry.com/rose1.jpg");
+        Image MainBackground = new Image(file2.toString()); 
+        //BufferedImage image2 = ImageIO.read(file2);
+        //Image MainBackground = SwingFXUtils.toFXImage(image2, null);
+        
         
         //Converting img to be the main background(for Generate Nono/Main Menu)
         BackgroundImage MbgImg;
@@ -409,14 +466,14 @@ public class FinalMenu extends Application{
         //Creating the Back Button for the Solve Nonogram Scene
         Button backButton = new Button("", BackIV2);
         backButton.setLayoutX(85);
-        backButton.setLayoutY(450);
+        backButton.setLayoutY(460);
         backButton.setMaxSize(100, 50);
         backButton.setMinSize(100, 50);
         backButton.setStyle("-fx-background-color: transparent;");
         
         //Creating the Generate Button for the Solve Nonogram Scene
         Button generate = new Button("", generateNonoIV);
-        generate.setLayoutX(185);
+        generate.setLayoutX(255);
         generate.setLayoutY(450);
         generate.setMinSize(100, 50);
         generate.setMinSize(100, 50);
@@ -454,9 +511,27 @@ public class FinalMenu extends Application{
         WidthHolder.setLayoutY(180);
         WidthHolder.setEditable(false);
         
+        //box for enabling hardcore mode
+        CheckBox HardCore = new CheckBox("");
+        HardCore.setSelected(false);
+        HardCore.setLayoutX(340);
+        HardCore.setLayoutY(280);
+        HardCore.setScaleX(2);
+        HardCore.setScaleY(2);
+        
+        HardCoreEnabled = HardCore.isSelected();
+            System.out.println(HardCoreEnabled);
+            
+        HardCore.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                HardCoreEnabled = HardCore.isSelected();
+                System.out.println(HardCoreEnabled);
+            }
+        });
+        
         //adding the components to the playScene
         Pane playLayout = new Pane(); 
-        playLayout.getChildren().addAll(swingNode, NonoNameIV, NonoDataIV, LengthDataIV, WidthDataIV, HardCoreDataIV, HardCoreBioDataIV, disabledIV, backButton, generate, LengthHolder, WidthHolder);
+        playLayout.getChildren().addAll(HardCore, swingNode, NonoNameIV, NonoDataIV, LengthDataIV, WidthDataIV, HardCoreDataIV, HardCoreBioDataIV, disabledIV, backButton, generate, LengthHolder, WidthHolder);
         playLayout.setBackground(MenuBackground);
         playScene = new Scene(playLayout, 600, 600);
         
@@ -798,7 +873,9 @@ public class FinalMenu extends Application{
             JTextField[][] spFields = new JTextField[wi][wi];
             
             //Background for the CreateNonogram Event
-            ImageIcon img = new ImageIcon("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/source2.gif");
+            //URL playBackground = ;
+            ImageIcon img = new ImageIcon(getClass().getResource("source2.gif"));
+            //ImageIcon img = new ImageIcon("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/source2.gif");
             JLabel background = new JLabel("", img, JLabel.CENTER);
             background.setSize(600, 600);
        
@@ -974,11 +1051,17 @@ public class FinalMenu extends Application{
                    Nonogram test = new Nonogram(nonoName, Checker, le, wi, LData, WData, finalLHolder, finalWHolder);
                    
                    //Stores the Nonogram in a file (appends)
-                   FileOutputStream fout = null;
+                   //FileOutputStream fout = null;
+                    //Outputstream in = getClass().getResourceAsStream("/OtherFiles/output.dat");
+                    //FileInputStream inputStream = new FileInputStream(new File("C:\\Users\\Hunter\\Desktop\\NonogramAlpha\\output.dat"));
+                    //InputStream inputStream = getClass().getResourceAsStream("output.dat");
+                    //ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
+                    //fileIn = new ObjectInputStream(in);
 
                    boolean exists = new File("output.dat").exists();
                    FileOutputStream fos = null;
                     try {
+                        
                         fos = new FileOutputStream("output.dat", true);
                     } 
                     catch (FileNotFoundException ex) {
@@ -1019,6 +1102,10 @@ public class FinalMenu extends Application{
             public void handle(ActionEvent event) {
                 okSound();
                 
+                
+                if(HardCoreEnabled)
+                    lives = 3;
+                
                 int wi = officialNonogram.getWidth(); 
                 int le = officialNonogram.getLength();
                 boolean[][] Checker = new boolean[wi][le];
@@ -1026,7 +1113,8 @@ public class FinalMenu extends Application{
                 JTextField[][] tpFields = new JTextField[le][le];
                 JTextField[][] spFields = new JTextField[wi][wi];
                 
-                ImageIcon img2 = new ImageIcon("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/showdown3.gif");
+                URL playBackground = getClass().getResource("showdown3.gif");
+                ImageIcon img2 = new ImageIcon(playBackground);
                 JLabel background = new JLabel("", img2, JLabel.CENTER);
                 
                 JFrame testGrid = new JFrame("Solve the Nonogram!");
@@ -1058,11 +1146,33 @@ public class FinalMenu extends Application{
                                boolean tweak = true;
                                Checker[ii][kk] = flip(Checker[ii][kk]);
 
-                               if (Checker[ii][kk])
+                               if (Checker[ii][kk]){
+                                   if(HardCoreEnabled && !officialNonogram.getValue(ii, kk)){
+                                       Checker[ii][kk] = false;
+                                       if(temp.getBackground() != Color.red){
+                                           lives--;
+                                       if(lives > 0)
+                                           hitMarkerSound();
+                                       }
+                                            
+                                       if(lives == 0){
+                                           missionFailedSound();
+                                           testGrid.setVisible(false);
+                                       }
+                                       temp.setBackground(Color.red);
+                                       temp.setEnabled(false);
+                                   }
+                                   else
                                    temp.setBackground(Color.black);
-                               else if (!Checker[ii][kk])
-                                temp.setBackground(Color.white);
-                           }
+                               }
+                                   
+                               else if (!Checker[ii][kk]){
+                                   if(temp.getBackground() == Color.red)
+                                    temp.setEnabled(false);
+                                   else
+                                    temp.setBackground(Color.white);
+                               }
+                            }
                        });
                        testGrid.add(temp);
                 }
@@ -1243,6 +1353,29 @@ public class FinalMenu extends Application{
         //if(officialBack.isActive() == false)
             officialBack.setMicrosecondPosition(0);
         officialBack.start();
+    }
+    
+    static void hitMarkerSound(){
+        //if(officialBack.isActive() == false)
+            officialhitMarker.setMicrosecondPosition(0);
+        officialhitMarker.start();
+    }
+    
+    static void missionFailedSound(){
+        //if(officialBack.isActive() == false)
+            officialmissionFailed.setMicrosecondPosition(0);
+        officialmissionFailed.start();
+        
+        long clipTime = officialSong.getMicrosecondPosition();
+        
+        while(officialmissionFailed.getFrameLength() - officialmissionFailed.getFramePosition() > 0)
+            officialSong.stop();
+        
+        if(officialmissionFailed.getFrameLength() - officialmissionFailed.getFramePosition() == 0){
+            officialSong.setMicrosecondPosition(clipTime);
+            officialSong.start();
+        }
+            
     }
     
     static void changeSong(Clip c){
