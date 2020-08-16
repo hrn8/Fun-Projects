@@ -10,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -43,7 +41,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Vector;
@@ -51,7 +48,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.embed.swing.SwingNode;
 import javafx.scene.control.CheckBox;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.HBox;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -78,7 +74,9 @@ public class FinalMenu extends Application{
     String officialNonogramName;
     Nonogram officialNonogram;
     
-    boolean HardCoreEnabled;
+    static boolean musicEnabled, soundsEnabled;
+    boolean HardCoreEnabled; 
+    
     int lives = 0;
    
     public static void main(String args[]){
@@ -98,7 +96,8 @@ public class FinalMenu extends Application{
             System.out.println(e);
         }
         
-        
+        musicEnabled = false;
+        soundsEnabled = false;
         
         URL Song1URL = getClass().getResource("melee.wav");
         URL Song2URL = getClass().getResource("meee.wav");
@@ -266,6 +265,48 @@ public class FinalMenu extends Application{
         ImageView CreateNonoIV = new ImageView(CreateNono);
         CreateNonoIV.setScaleX(.7);
         CreateNonoIV.setScaleY(.7);
+        
+        Image muteMusic = new Image("https://txt-dynamic.static.1001fonts.net/txt/dHRmLjcyLjAwMDAwMC5UWFYwWlNCTmRYTnBZdywsLjAAAAAA/most-wazted.regular.png");
+        ImageView muteMusicIV = new ImageView(muteMusic);
+        muteMusicIV.setScaleX(.4);
+        muteMusicIV.setScaleY(.4);
+        muteMusicIV.setX(150);
+        muteMusicIV.setY(415); 
+        
+        CheckBox muteSoundCheckBox = new CheckBox("");
+        muteSoundCheckBox.setSelected(false);
+        muteSoundCheckBox.setLayoutX(380);
+        muteSoundCheckBox.setLayoutY(435);
+        
+        muteSoundCheckBox.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                musicEnabled = muteSoundCheckBox.isSelected();
+                if(musicEnabled)
+                    officialSong.stop();
+                else{
+                    officialSong.setMicrosecondPosition(0);
+                    officialSong.loop(Clip.LOOP_CONTINUOUSLY);
+                }
+            }
+        });
+        
+        Image muteSound = new Image("https://txt-dynamic.static.1001fonts.net/txt/dHRmLjcyLjAwMDAwMC5UWFYwWlNCVGIzVnVaQSwsLjAAAAAA/most-wazted.regular.png");
+        ImageView muteSoundIV = new ImageView(muteSound);
+        muteSoundIV.setScaleX(.4);
+        muteSoundIV.setScaleY(.4);
+        muteSoundIV.setX(320);
+        muteSoundIV.setY(405); 
+        
+        CheckBox muteSoundCheckBox2 = new CheckBox("");
+        muteSoundCheckBox2.setSelected(false);
+        muteSoundCheckBox2.setLayoutX(570);
+        muteSoundCheckBox2.setLayoutY(435);
+        
+         muteSoundCheckBox2.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                soundsEnabled = muteSoundCheckBox2.isSelected();
+            }
+        });
         
         //Formatting the Button for Create Nono
         Button mButton1 = new Button("", CreateNonoIV);
@@ -454,6 +495,7 @@ public class FinalMenu extends Application{
         layout1.getChildren().add(NonogramNanicIV);
         layout1.getChildren().add(HunterNoeyIV);
         layout1.getChildren().add(StartIV);
+        layout1.getChildren().add(muteMusicIV);
         startScene = new Scene(layout1, 600, 600);
         
         //Menu Screen Layout, creating the Scene
@@ -462,6 +504,10 @@ public class FinalMenu extends Application{
         menuLayout.getChildren().add(mButton1); 
         menuLayout.getChildren().add(mButton2); 
         menuLayout.getChildren().add(mButton4);
+        menuLayout.getChildren().add(muteMusicIV);
+        menuLayout.getChildren().add(muteSoundIV);
+        menuLayout.getChildren().add(muteSoundCheckBox);
+        menuLayout.getChildren().add(muteSoundCheckBox2);
         
         //Creating the Back Button for the Solve Nonogram Scene
         Button backButton = new Button("", BackIV2);
@@ -496,8 +542,8 @@ public class FinalMenu extends Application{
         SwingNode swingNode = new SwingNode();
         swingNode.setContent(select);
         swingNode.setContent(NonoChoices);
-        swingNode.setLayoutX(50);
-        swingNode.setLayoutY(150);
+        swingNode.setLayoutX(40);
+        swingNode.setLayoutY(110);
         
         //Displaying the Length of the selected Nonogram
         TextField LengthHolder = new TextField(Integer.toString(officialNonogram.getLength()));
@@ -519,13 +565,9 @@ public class FinalMenu extends Application{
         HardCore.setScaleX(2);
         HardCore.setScaleY(2);
         
-        HardCoreEnabled = HardCore.isSelected();
-            System.out.println(HardCoreEnabled);
-            
         HardCore.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 HardCoreEnabled = HardCore.isSelected();
-                System.out.println(HardCoreEnabled);
             }
         });
         
@@ -563,7 +605,8 @@ public class FinalMenu extends Application{
         
         button1.setOnAction(e-> {Window.setScene(menuScene);
             okSound();
-            officialSong.loop(Clip.LOOP_CONTINUOUSLY);
+            if(!musicEnabled)
+                officialSong.loop(Clip.LOOP_CONTINUOUSLY);
         });
         
         //Highlighted button effects
@@ -1058,11 +1101,11 @@ public class FinalMenu extends Application{
                     //ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
                     //fileIn = new ObjectInputStream(in);
 
-                   boolean exists = new File("output.dat").exists();
+                   boolean exists = new File("C:\\Users\\Hunter\\Documents\\GitHub\\Coding-Projects\\NonogramAlpha\\src\\OtherFiles\\output.dat").exists();
                    FileOutputStream fos = null;
                     try {
                         
-                        fos = new FileOutputStream("output.dat", true);
+                        fos = new FileOutputStream("C:\\Users\\Hunter\\Documents\\GitHub\\Coding-Projects\\NonogramAlpha\\src\\OtherFiles\\output.dat", true);
                     } 
                     catch (FileNotFoundException ex) {
                         Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
@@ -1338,42 +1381,49 @@ public class FinalMenu extends Application{
     }
     
     static void toggleSound(){
-        //if(officialToggle.isActive() == false)
-            officialToggle.setMicrosecondPosition(0);
+        if(!soundsEnabled){
+        officialToggle.setMicrosecondPosition(0);
         officialToggle.start();
+        }
     }
     
     static void okSound(){
-        //if(officialOk.isActive() == false)
+        if(!soundsEnabled){
             officialOk.setMicrosecondPosition(0);
-        officialOk.start();
+            officialOk.start();
+        }
     }
     
     static void backSound(){
-        //if(officialBack.isActive() == false)
+        if(!soundsEnabled){
             officialBack.setMicrosecondPosition(0);
-        officialBack.start();
+            officialBack.start();
+        }
     }
     
     static void hitMarkerSound(){
-        //if(officialBack.isActive() == false)
+       if(!soundsEnabled){
             officialhitMarker.setMicrosecondPosition(0);
-        officialhitMarker.start();
+            officialhitMarker.start();
+       }
     }
     
     static void missionFailedSound(){
         //if(officialBack.isActive() == false)
+        if(!soundsEnabled){
             officialmissionFailed.setMicrosecondPosition(0);
-        officialmissionFailed.start();
+            officialmissionFailed.start();
+        }
         
         long clipTime = officialSong.getMicrosecondPosition();
         
-        while(officialmissionFailed.getFrameLength() - officialmissionFailed.getFramePosition() > 0)
+        while(officialmissionFailed.getFrameLength() - officialmissionFailed.getFramePosition() > 0 && !soundsEnabled)
             officialSong.stop();
         
-        if(officialmissionFailed.getFrameLength() - officialmissionFailed.getFramePosition() == 0){
+        if(officialmissionFailed.getFrameLength() - officialmissionFailed.getFramePosition() == 0 && !musicEnabled){
             officialSong.setMicrosecondPosition(clipTime);
             officialSong.start();
+            officialSong.loop(Clip.LOOP_CONTINUOUSLY);
         }
             
     }

@@ -81,5 +81,4 @@ public class Nonogram implements Serializable{
     public boolean getValue(int lengthIndex, int widthIndex){
         return this.markers[lengthIndex][widthIndex];
     }
-    
-}
+ }
