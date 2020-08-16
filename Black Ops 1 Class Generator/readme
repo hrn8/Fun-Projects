@@ -1,0 +1,8 @@
+A program I created to randomly generate a random class for one of my favorite video games, Call of Duty Black Ops! While it's only 10 years late,
+the program randomly generates a class for the user to use online. To create a class, simply click!
+
+Things I'm looking to implement in the future:
+-Hoovering over the weapon shows you its stats
+-Hoovering over killstreaks/perks/equipment gives you a description about them
+-Weapon Camo (big priority)
+-Debugging
