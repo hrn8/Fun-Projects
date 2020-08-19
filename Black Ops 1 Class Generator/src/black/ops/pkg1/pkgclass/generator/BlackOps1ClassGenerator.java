@@ -5,21 +5,12 @@
  */
 package black.ops.pkg1.pkgclass.generator;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
-import static com.sun.javafx.scene.control.skin.Utils.getResource;
 import static com.sun.org.apache.bcel.internal.util.SecuritySupport.getResourceAsStream;
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -118,7 +109,7 @@ public class BlackOps1ClassGenerator {
         imageHolder = new HashMap<String, ImageIcon>();
         
         //Guns
-        imageHolder.put("M16", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/8/8a/M16_ELITE.png/revision/latest?cb=20130204231104")));
+        imageHolder.put("M-16", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/8/8a/M16_ELITE.png/revision/latest?cb=20130204231104")));
         imageHolder.put("Enfield", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/6/6c/ELITE_Enfield.png/revision/latest?cb=20120106112205")));
         imageHolder.put("M14", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/4/42/ELITE_M14.png/revision/latest?cb=20120106104354")));
         imageHolder.put("Famas", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/2/2d/ELITE_Famas.png/revision/latest?cb=20120106111729")));
@@ -228,7 +219,7 @@ public class BlackOps1ClassGenerator {
         imageHolder.put("Speed Reloader", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/a/a3/ELITE_Speed_Reloader_BO.png/revision/latest?cb=20120105151511")));
         imageHolder.put("Snub Nose", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/a/a1/Menu_mp_weapons_attach_snub.png/revision/latest/top-crop/width/360/height/450?cb=20120120043004")));
         imageHolder.put("SCOPE Variable Zoom", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/0/02/ELITE_Variable_Zoom.png/revision/latest?cb=20120106025851")));
-    }
+    }   //SCOPE Infared Scope
     
     public void populateKillstreaks(){
         killstreaks = new HashMap<Integer, String[]>();
@@ -279,10 +270,10 @@ public class BlackOps1ClassGenerator {
         weaponList[2][3] = new PrimaryWeapon("HS10", 85, 30, 70, 100, 10, "NA", new String[]{"Dual Wield",""});
         
         //Snipers
-        weaponList[3][0] = new PrimaryWeapon("Dragunov", 70, 90, 65, 90, 10, "NA", new String[]{"Extended Mag", "SCOPE ACOG", "SCOPE Infared Scope", "Suppressor", "SCOPE Variable Zoom",""});
-        weaponList[3][1] = new PrimaryWeapon("WA2000", 75, 90, 70, 90, 10, "NA", new String[]{"Extended Mag", "SCOPE ACOG", "SCOPE Infared Scope", "Suppressor", "SCOPE Variable Zoom",""});
-        weaponList[3][2] = new PrimaryWeapon("L96A1", 90, 90, 75, 90, 12, "NA", new String[]{"Extended Mag", "SCOPE ACOG", "SCOPE Infared Scope", "Suppressor", "SCOPE Variable Zoom",""});
-        weaponList[3][3] = new PrimaryWeapon("PSG1", 80, 90, 80, 90, 10, "NA", new String[]{"Extended Mag", "SCOPE ACOG", "SCOPE Infared Scope", "Suppressor", "SCOPE Variable Zoom",""});
+        weaponList[3][0] = new PrimaryWeapon("Dragunov", 70, 90, 65, 90, 10, "NA", new String[]{"Extended Mag", "SCOPE ACOG", "SCOPE Infrared Scope", "Suppressor", "SCOPE Variable Zoom",""});
+        weaponList[3][1] = new PrimaryWeapon("WA2000", 75, 90, 70, 90, 10, "NA", new String[]{"Extended Mag", "SCOPE ACOG", "SCOPE Infrared Scope", "Suppressor", "SCOPE Variable Zoom",""});
+        weaponList[3][2] = new PrimaryWeapon("L96A1", 90, 90, 75, 90, 12, "NA", new String[]{"Extended Mag", "SCOPE ACOG", "SCOPE Infrared Scope", "Suppressor", "SCOPE Variable Zoom",""});
+        weaponList[3][3] = new PrimaryWeapon("PSG1", 80, 90, 80, 90, 10, "NA", new String[]{"Extended Mag", "SCOPE ACOG", "SCOPE Infrared Scope", "Suppressor", "SCOPE Variable Zoom",""});
         
         //Machine Guns
         weaponList[4][0] = new PrimaryWeapon("HK21", 65, 75, 65, 80, 65, "NA", new String[]{"Extended Mag", "SCOPE Red Dot Sight", "SCOPE Reflex Sight", "SCOPE Infrared Scope",""});
@@ -378,6 +369,8 @@ public class BlackOps1ClassGenerator {
                     gunIndex = (int)(Math.random()*(weaponList[classIndex].length-7));
                     break;
             }
+            
+            
 
             PrimaryWeapon temp = weaponList[classIndex][gunIndex];
             primaryWeaponTitle.setText(temp.getName());
@@ -423,6 +416,9 @@ public class BlackOps1ClassGenerator {
             }
 
             classIndex = (int)(Math.random()*3);
+            
+            if(classIndex == 3) classIndex--;
+            
             gunIndex = 0;
 
             switch(classIndex){
@@ -577,6 +573,7 @@ public class BlackOps1ClassGenerator {
             System.out.println(e);
         }
     }
+    
     
     public void formatWindow(){
         frame = new JFrame("Black Ops 1 Class Generator"); 
