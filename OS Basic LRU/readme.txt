@@ -1,4 +1,4 @@
-This code mimics a LRU cache.
+This code mimics both a LRU and an Optimal Cache!
 
 To compile the program, simply type in gcc -o hrn8OptimalLRU hrn8OptimalLRU.c in a Linux environment
 
