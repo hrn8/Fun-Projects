@@ -4,28 +4,19 @@
 int i, j, k, l, MAX_PAGES = 0, numberCount = 20;
 
 void initializeValues(int referenceString[], int pageStorage[MAX_PAGES][2]){
+    int initialTableSize = 0;
+    int currentlyStored[6] = {-1, -1, -1, -1, -1, -1};
 
-  bool inStorageFlag = 0;
-  //setting the initial values
-    for(i = 0; i < MAX_PAGES; i++){
-        pageStorage[i][0] = referenceString[i];
- 
-        for (k = 0; k < i; k++){
-            if (pageStorage[k][0] == pageStorage[i][0] && pageStorage[k][0] != -1){
-                inStorageFlag = 1;
-                j = k;
-
-                do{
-                  inStorageFlag = 0;
-                  pageStorage[i][0] = referenceString[j]; 
-
-                  for(l = 0; l < i; l++)
-                    if(pageStorage[i][0] == pageStorage[l][0])
-                      inStorageFlag = 1;
-
-                  j++;
-                }while(inStorageFlag == 1);
-            }  
+    //setting the initial values
+    for(i = 0; i < numberCount; i++){
+        if(currentlyStored[referenceString[i]] == -1){
+            currentlyStored[referenceString[i]] = 1;
+            pageStorage[initialTableSize][0] = referenceString[i];
+            initialTableSize++;
+        }
+        if(initialTableSize == MAX_PAGES){
+            j = i;
+            return;
         }
     }
 }
