@@ -219,6 +219,7 @@ public class BlackOps1ClassGenerator {
         imageHolder.put("Speed Reloader", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/a/a3/ELITE_Speed_Reloader_BO.png/revision/latest?cb=20120105151511")));
         imageHolder.put("Snub Nose", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/a/a1/Menu_mp_weapons_attach_snub.png/revision/latest/top-crop/width/360/height/450?cb=20120120043004")));
         imageHolder.put("SCOPE Variable Zoom", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/0/02/ELITE_Variable_Zoom.png/revision/latest?cb=20120106025851")));
+        imageHolder.put("Background", new ImageIcon(new URL("https://steamcdn-a.akamaihd.net/steamcommunity/public/images/items/681660/3bc28a29bd3b701e8bda6c275b32d308381f0700.jpg")));
     }   //SCOPE Infared Scope
     
     public void populateKillstreaks(){
@@ -830,7 +831,9 @@ public class BlackOps1ClassGenerator {
         KS3Title.setSize(160, 20);
         KS3Title.setLocation(390, 524);
         
-        ImageIcon img2 = new ImageIcon("victory3.jpg");
+        
+        //https://images3.alphacoders.com/585/thumb-1920-585976.jpg
+        ImageIcon img2 = imageHolder.get("Background");
         JLabel background = new JLabel("", img2, JLabel.LEFT);
         frame.setContentPane(background);
         
