@@ -42,6 +42,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Vector;
 import javafx.embed.swing.SwingFXUtils;
@@ -99,18 +100,21 @@ public class FinalMenu extends Application{
         musicEnabled = false;
         soundsEnabled = false;
         
-        URL Song1URL = getClass().getResource("melee.wav");
-        URL Song2URL = getClass().getResource("meee.wav");
-        URL Song3URL = getClass().getResource("flat.wav");
-        URL Song4URL = getClass().getResource("Menu1.wav");
-        URL Song5URL = getClass().getResource("Boss.wav");
-        URL Song6URL = getClass().getResource("Attack.wav");
-        URL ToggleURL = getClass().getResource("menu-toggle.wav");
-        URL OkURL = getClass().getResource("menu-ok.wav");
-        URL BackURL = getClass().getResource("menu-back.wav");
-        URL hitmarkerURL = getClass().getResource("hitmarker.wav");
-        URL missionFailedURL = getClass().getResource("missionfailed.wav");
         
+        //Import sounds from their directories. Fixed the paths
+        URL Song1URL = getClass().getResource("/Music/melee.wav");
+        URL Song2URL = getClass().getResource("/Music/meee.wav");
+        URL Song3URL = getClass().getResource("/Music/flat.wav");
+        URL Song4URL = getClass().getResource("/Music/Menu1.wav");
+        URL Song5URL = getClass().getResource("/Music/Boss.wav");
+        URL Song6URL = getClass().getResource("/Music/Attack.wav");
+        URL ToggleURL = getClass().getResource("/Sounds/menu-toggle.wav");
+        URL OkURL = getClass().getResource("/Sounds/menu-ok.wav");
+        URL BackURL = getClass().getResource("/Sounds/menu-back.wav");
+        URL hitmarkerURL = getClass().getResource("/Sounds/hitmarker.wav");
+        URL missionFailedURL = getClass().getResource("/Sounds/missionfailed.wav");
+        
+        //Converting our sounds to AudioInputStream
         AudioInputStream officialSong1 = AudioSystem.getAudioInputStream(Song1URL);
         AudioInputStream officialSong2 = AudioSystem.getAudioInputStream(Song2URL);
         AudioInputStream officialSong3 = AudioSystem.getAudioInputStream(Song3URL);
@@ -150,8 +154,7 @@ public class FinalMenu extends Application{
         
         //Initial Song set to Flat Zone (officialSong3AS
         officialSong = officialSong3AS;
-        //clip.loop(Clip.LOOP_CONTINUOUSLY);
-        //Thread.sleep(10000); 
+        
         
         //Holds the Nonogram Data
         Vector<Nonogram> dataHolder = new Vector<Nonogram>();
@@ -162,10 +165,7 @@ public class FinalMenu extends Application{
         try {
             //myClass.getResourceAsStream("file.txt")
             InputStream in = getClass().getResourceAsStream("/OtherFiles/output.dat");
-            //FileInputStream inputStream = new FileInputStream(new File("C:\\Users\\Hunter\\Desktop\\NonogramAlpha\\output.dat"));
-            //InputStream inputStream = getClass().getResourceAsStream("output.dat");
-            //ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
-             fileIn = new ObjectInputStream(in);
+            fileIn = new ObjectInputStream(in);
         } catch (Exception ex) {
             System.out.println(ex);
             fileOpened = false;
@@ -226,10 +226,9 @@ public class FinalMenu extends Application{
         });
         
         //Reading in the backgrounds (as files) to be converted into Backgrounds
-        URL file = getClass().getResource("nonogram_promo_bw.jpg");
-        URL file2 = getClass().getResource("background.gif");
+        URL file = getClass().getResource("/Images/nonogram_promo_bw.jpg");
+        URL file2 = getClass().getResource("/Images/background.gif");
         
-        //Image Conversion for Program Title
         BufferedImage image = ImageIO.read(file);
         Image img = SwingFXUtils.toFXImage(image, null);
         Image NonogramNanic = new Image("https://txt-dynamic.static.1001fonts.net/txt/dHRmLjcyLjAwMDAwMC5UbTl1YjJkeVlXMGdUbUZ1YVdNLC4wAA,,/most-wazted.regular.png");
@@ -302,11 +301,11 @@ public class FinalMenu extends Application{
         muteSoundCheckBox2.setLayoutX(570);
         muteSoundCheckBox2.setLayoutY(435);
         
-         muteSoundCheckBox2.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                soundsEnabled = muteSoundCheckBox2.isSelected();
-            }
-        });
+        muteSoundCheckBox2.setOnAction(new EventHandler<ActionEvent>() {
+           public void handle(ActionEvent event) {
+               soundsEnabled = muteSoundCheckBox2.isSelected();
+           }
+       });
         
         //Formatting the Button for Create Nono
         Button mButton1 = new Button("", CreateNonoIV);
@@ -1101,33 +1100,28 @@ public class FinalMenu extends Application{
                     //ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
                     //fileIn = new ObjectInputStream(in);
 
-                   boolean exists = new File("C:\\Users\\Hunter\\Documents\\GitHub\\Coding-Projects\\NonogramAlpha\\src\\OtherFiles\\output.dat").exists();
+                    
+                    
+                    
+                   //InputStream in = getClass().getResourceAsStream("/OtherFiles/output.dat");
+                   
+                   boolean exists = new File("getClass().getResourceAsStream(\"/OtherFiles/output.dat\"").exists();
                    FileOutputStream fos = null;
-                    try {
-                        
-                        fos = new FileOutputStream("C:\\Users\\Hunter\\Documents\\GitHub\\Coding-Projects\\NonogramAlpha\\src\\OtherFiles\\output.dat", true);
+                   File savedFile = null;
+                   URL savedURL = getClass().getResource("/OtherFiles/output.dat");
+                try {
+                    savedFile = new File(savedURL.toURI());
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                   
+                   try {
+                        fos = new FileOutputStream(savedFile, true);
                     } 
                     catch (FileNotFoundException ex) {
                         Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                   ObjectOutputStream oos = null;
-                    try {
-                        oos = exists ? 
-                                new ObjectOutputStream(fos) {
-                                    protected void writeStreamHeader() throws IOException {
-                                        reset();
-                                    }
-                                }:new ObjectOutputStream(fos);
-                    } 
-                    catch (IOException ex) {
-                        Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                   try {
-                       oos.writeObject(test);
-                   } 
-                   catch (IOException ex) {
-                       Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-                   }
+                   
                   
                    //We only READ from the file once, thus we store it in the vector 
                   dataHolder.add(test);
