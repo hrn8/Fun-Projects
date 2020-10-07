@@ -1099,21 +1099,20 @@ public class FinalMenu extends Application{
                     //InputStream inputStream = getClass().getResourceAsStream("output.dat");
                     //ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
                     //fileIn = new ObjectInputStream(in);
-
+                    //InputStream in = getClass().getResourceAsStream("/OtherFiles/output.dat");
                     
-                    
-                    
-                   //InputStream in = getClass().getResourceAsStream("/OtherFiles/output.dat");
-                   
-                   boolean exists = new File("getClass().getResourceAsStream(\"/OtherFiles/output.dat\"").exists();
-                   FileOutputStream fos = null;
                    File savedFile = null;
                    URL savedURL = getClass().getResource("/OtherFiles/output.dat");
-                try {
+                   
+                   FileOutputStream fos = null;
+                   
+                
+                   try {
                     savedFile = new File(savedURL.toURI());
-                } catch (URISyntaxException ex) {
+                    } 
+                   catch (URISyntaxException ex) {
                     Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    }
                    
                    try {
                         fos = new FileOutputStream(savedFile, true);
@@ -1121,6 +1120,29 @@ public class FinalMenu extends Application{
                     catch (FileNotFoundException ex) {
                         Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                   
+                   boolean exists = savedFile.exists();
+                   System.out.println(exists); 
+                   
+                  ObjectOutputStream oos = null;
+                    try {
+                        oos = exists ? 
+                                new ObjectOutputStream(fos) {
+                                    protected void writeStreamHeader() throws IOException {
+                                        reset();
+                                    }
+                                }:new ObjectOutputStream(fos);
+                    } 
+                    catch (IOException ex) {
+                        Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                   try {
+                       oos.writeObject(test);
+                   } 
+                   catch (IOException ex) {
+                       Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                   }
+                    
                    
                   
                    //We only READ from the file once, thus we store it in the vector 
