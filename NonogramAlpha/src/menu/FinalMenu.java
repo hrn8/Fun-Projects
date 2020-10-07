@@ -766,7 +766,7 @@ public class FinalMenu extends Application{
               okSound();
               changeSong(officialSong2AS); 
            }
-       });
+        });
         
         //Highlighted button effects
         song2.setOnMouseEntered(e ->
@@ -788,7 +788,7 @@ public class FinalMenu extends Application{
                  okSound();
                  changeSong(officialSong3AS);
              }
-         });
+        });
         
         //Highlighted button effects
         song3.setOnMouseEntered(e ->
@@ -872,7 +872,7 @@ public class FinalMenu extends Application{
         mButton1.setOnAction(new EventHandler<ActionEvent>() {
         
         @Override public void handle(ActionEvent e) {
-            //Entering a Length
+        //Entering a Length
             while(true){
                 try{
                     final JDialog dialog = new JDialog();
@@ -891,7 +891,7 @@ public class FinalMenu extends Application{
             }
              
              //Entering a Width
-             while(true){
+            while(true){
                 try {
                     width = Integer.parseInt(JOptionPane.showInputDialog(null, "Please enter the width of the nanogram (1-25):"));
                     if (width <= 0 || width > 25){
@@ -904,7 +904,7 @@ public class FinalMenu extends Application{
                   continue;
                 }
                 break;
-              }
+            }
         
             int wi = width; 
             int le = length;
@@ -915,9 +915,7 @@ public class FinalMenu extends Application{
             JTextField[][] spFields = new JTextField[wi][wi];
             
             //Background for the CreateNonogram Event
-            //URL playBackground = ;
             ImageIcon img = new ImageIcon(getClass().getResource("source2.gif"));
-            //ImageIcon img = new ImageIcon("C://Users//Hunter//Desktop//NonogramAlpha//src//menu/source2.gif");
             JLabel background = new JLabel("", img, JLabel.CENTER);
             background.setSize(600, 600);
        
@@ -930,7 +928,7 @@ public class FinalMenu extends Application{
             boolean[][] Checker = new boolean[wi][le];
             
             //Generating the Nonogram
-            for (int i=0;i<width;i++){
+            for (int i = 0;i < width; i++){
                 for (int k = 0; k < length; k++){
                     int movementIncrementor = 400;
                     
@@ -983,24 +981,25 @@ public class FinalMenu extends Application{
             finish.addActionListener(new ActionListener(){
                 
             public void actionPerformed(java.awt.event.ActionEvent event){
-               int finalLHolder = 0, finalWHolder = 0;
+                int finalLHolder = 0, finalWHolder = 0;
                
-               //generating the amount of markers for length
-               for(int i = 0; i < le; i ++){
-                   int currentMarkers = 0;
-                   int currentLength = 0;
+                //generating the amount of markers for length
+                for(int i = 0; i < le; i ++){
+                    int currentMarkers = 0;
+                    int currentLength = 0;
 
-                   for(int j = 0; j < wi; j++){
-                       if(Checker[j][i] == true)    //if true, we can increase length of current marker by 1
-                          currentLength++;
-                       if(Checker[j][i] == false)   //if false, the current streak ends
-                          currentLength = 0;
-                       if(currentLength == 1)       //if length is 1, ensures we must have a marker
-                           currentMarkers++;
-                       }
-                       finalLHolder = Math.max(finalLHolder, currentMarkers);   //gets max amount of markers
-                  }
-                   //generating the amount of markers for width
+                    for(int j = 0; j < wi; j++){
+                        if(Checker[j][i] == true)    //if true, we can increase length of current marker by 1
+                           currentLength++;
+                        if(Checker[j][i] == false)   //if false, the current streak ends
+                           currentLength = 0;
+                        if(currentLength == 1)       //if length is 1, ensures we must have a marker
+                            currentMarkers++;
+                        }
+                    finalLHolder = Math.max(finalLHolder, currentMarkers);   //gets max amount of markers
+                }
+                   
+                //generating the amount of markers for width
                 for(int i = 0; i < wi; i ++){
                     int currentMarkers = 0;
                     int currentLength = 0;
@@ -1014,145 +1013,134 @@ public class FinalMenu extends Application{
                            currentMarkers++;
                        }
                        finalWHolder = Math.max(finalWHolder, currentMarkers); //gets max amount of markers
-                  }
+                }
 
-                   int LData[][] = new int[le][le];     //holds markers for length
-                   int WData[][] = new int[wi][wi];     //holds markers for width
+                int LData[][] = new int[le][le];     //holds markers for length
+                int WData[][] = new int[wi][wi];     //holds markers for width
                    
                    //Storing the markers in their respectable arrays
-                   for(int i = 0; i < le; i++){
-                       int leIndex = 0;
-                       int currentLength = 0;
+                for(int i = 0; i < le; i++){
+                    int leIndex = 0;
+                    int currentLength = 0;
 
-                       for(int j = 0; j < wi; j++){
-                           if(Checker[j][i] == true)    //currentLenght goes up by 1 if its true
-                               currentLength++;
-                           else if(Checker[j][i] == false && currentLength > 0){    //if we find a false and have a streak )markers
-                               LData[i][leIndex] = currentLength;                   //we store this in the array, incrementor goes up by 1
-                               leIndex++;
-                               currentLength = 0;
-                           }
+                    for(int j = 0; j < wi; j++){
+                        if(Checker[j][i] == true)    //currentLenght goes up by 1 if its true
+                            currentLength++;
+                        else if(Checker[j][i] == false && currentLength > 0){    //if we find a false and have a streak )markers
+                            LData[i][leIndex] = currentLength;                   //we store this in the array, incrementor goes up by 1
+                            leIndex++;
+                            currentLength = 0;
+                        }
 
-                           if(j == wi - 1 && currentLength > 0)       //if there is a streak (markers) on the final element of 
-                               LData[i][leIndex] = currentLength;     //the array, we must store it
-                       }
-                  }
+                        if(j == wi - 1 && currentLength > 0)       //if there is a streak (markers) on the final element of 
+                            LData[i][leIndex] = currentLength;     //the array, we must store it
+                    }
+                }
                    
-                   //We reverse for formatting purposes (as seen in Solve Nonogram) 
-                   reverse(LData, le, finalLHolder);                           
-                   reverse2(LData, finalLHolder, le);
+                //We reverse for formatting purposes (as seen in Solve Nonogram) 
+                reverse(LData, le, finalLHolder);                           
+                reverse2(LData, finalLHolder, le);
 
-                   //Store zereos in the back for formatting purposes (as seen in Solve Nonogram)
-                   for(int i = 0; i < le; i++)
-                       pushZerosToEnd(LData, i, finalLHolder);
+                //Store zereos in the back for formatting purposes (as seen in Solve Nonogram)
+                for(int i = 0; i < le; i++)
+                    pushZerosToEnd(LData, i, finalLHolder);
 
-                   for(int i = 0; i < wi; i++){
-                       int wiIndex = 0;
-                       int currentLength = 0;
+                for(int i = 0; i < wi; i++){
+                    int wiIndex = 0;
+                    int currentLength = 0;
 
-                       for(int j = 0; j < le; j++){
-                           if(Checker[i][j] == true)    //currentLenght goes up by 1 if its true
-                               currentLength++;
-                           else if(Checker[i][j] == false && currentLength > 0){
-                               WData[i][wiIndex] = currentLength;   //if we find a false and have a streak )markers
-                               wiIndex++;                           //we store this in the array, incrementor goes up by 1
-                               currentLength = 0;
-                           }
+                    for(int j = 0; j < le; j++){
+                        if(Checker[i][j] == true)    //currentLenght goes up by 1 if its true
+                            currentLength++;
+                        else if(Checker[i][j] == false && currentLength > 0){
+                            WData[i][wiIndex] = currentLength;   //if we find a false and have a streak )markers
+                            wiIndex++;                           //we store this in the array, incrementor goes up by 1
+                            currentLength = 0;
+                        }
 
-                           if(j == le - 1 && currentLength > 0)     //if there is a streak (markers) on the final element of
-                               WData[i][wiIndex] = currentLength;   //the array, we must store it
-                       }
-                   }
+                        if(j == le - 1 && currentLength > 0)     //if there is a streak (markers) on the final element of
+                            WData[i][wiIndex] = currentLength;   //the array, we must store it
+                    }
+                }
                    
-                   //We reverse for formatting purposes (as seen in Solve Nonogram) 
-                   reverse2(WData, finalWHolder, wi);
+                //We reverse for formatting purposes (as seen in Solve Nonogram) 
+                reverse2(WData, finalWHolder, wi);
 
-                   //Store zereos in the back for formatting purposes (as seen in Solve Nonogram)
-                   for(int i = 0; i < wi; i++)
-                       pushZerosToEnd(WData, i, finalWHolder);
+                //Store zereos in the back for formatting purposes (as seen in Solve Nonogram)
+                for(int i = 0; i < wi; i++)
+                    pushZerosToEnd(WData, i, finalWHolder);
 
-                   String nonoName;
+                String nonoName;
                    
-                   //Enter the name of the Nonogram (assuming it's not taken)
-                   while(true){
-                       try{
-                           nonoName = JOptionPane.showInputDialog(null, "Enter the name of the nonogram:");
-                           if (NonogramNameHolder.contains(nonoName)){
-                               JOptionPane.showMessageDialog(null, "The selected name already exists. Please enter a valid name:");
-                               continue;
-                           }
-                       } 
-                       catch (Exception ee){
-                           JOptionPane.showMessageDialog(null, "Invalid value for name.");
-                           continue;
-                       }
-                       break;
-                   }
+                //Enter the name of the Nonogram (assuming it's not taken)
+                while(true){
+                    try{
+                        nonoName = JOptionPane.showInputDialog(null, "Enter the name of the nonogram:");
+                        if (NonogramNameHolder.contains(nonoName)){
+                            JOptionPane.showMessageDialog(null, "The selected name already exists. Please enter a valid name:");
+                            continue;
+                        }
+                    } 
+                    catch (Exception ee){
+                        JOptionPane.showMessageDialog(null, "Invalid value for name.");
+                        continue;
+                    }
+                    break;
+                }
                    
-                   //Creating the Nonogram
-                   Nonogram test = new Nonogram(nonoName, Checker, le, wi, LData, WData, finalLHolder, finalWHolder);
+                //Creating the Nonogram
+                Nonogram test = new Nonogram(nonoName, Checker, le, wi, LData, WData, finalLHolder, finalWHolder);
                    
-                   //Stores the Nonogram in a file (appends)
-                   //FileOutputStream fout = null;
-                    //Outputstream in = getClass().getResourceAsStream("/OtherFiles/output.dat");
-                    //FileInputStream inputStream = new FileInputStream(new File("C:\\Users\\Hunter\\Desktop\\NonogramAlpha\\output.dat"));
-                    //InputStream inputStream = getClass().getResourceAsStream("output.dat");
-                    //ObjectInputStream oin = new ObjectInputStream(new BufferedInputStream(in));
-                    //fileIn = new ObjectInputStream(in);
-                    //InputStream in = getClass().getResourceAsStream("/OtherFiles/output.dat");
-                    
-                   File savedFile = null;
-                   URL savedURL = getClass().getResource("/OtherFiles/output.dat");
+                File savedFile = null;
+                URL savedURL = getClass().getResource("/OtherFiles/output.dat");
                    
-                   FileOutputStream fos = null;
+                FileOutputStream fos = null;
                    
                 
-                   try {
+                try {
                     savedFile = new File(savedURL.toURI());
-                    } 
-                   catch (URISyntaxException ex) {
+                } 
+                catch (URISyntaxException ex) {
                     Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                }
                    
-                   try {
-                        fos = new FileOutputStream(savedFile, true);
-                    } 
-                    catch (FileNotFoundException ex) {
-                        Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                try {
+                    fos = new FileOutputStream(savedFile, true);
+                } 
+                catch (FileNotFoundException ex) {
+                    Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
+                }
                    
-                   boolean exists = savedFile.exists();
-                   System.out.println(exists); 
+                boolean exists = savedFile.exists();
+                System.out.println(exists); 
                    
-                  ObjectOutputStream oos = null;
-                    try {
-                        oos = exists ? 
-                                new ObjectOutputStream(fos) {
-                                    protected void writeStreamHeader() throws IOException {
-                                        reset();
-                                    }
-                                }:new ObjectOutputStream(fos);
-                    } 
-                    catch (IOException ex) {
-                        Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                   try {
-                       oos.writeObject(test);
-                   } 
-                   catch (IOException ex) {
-                       Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-                   }
+                ObjectOutputStream oos = null;
+                try {
+                    oos = exists ? 
+                        new ObjectOutputStream(fos) {
+                        protected void writeStreamHeader() throws IOException {
+                            reset();
+                            }
+                        }:new ObjectOutputStream(fos);
+                } 
+                catch (IOException ex) {
+                    Logger.getLogger(FinalMenu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    oos.writeObject(test);
+                } 
+                catch (IOException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                }
                     
-                   
-                  
-                   //We only READ from the file once, thus we store it in the vector 
-                  dataHolder.add(test);
-                  NonogramNameHolder.add(test.getName());
-                  testGrid.setVisible(false);
+                //We only READ from the file once, thus we store it in the vector 
+                dataHolder.add(test);
+                NonogramNameHolder.add(test.getName());
+                testGrid.setVisible(false);
             }
                      
-            });
-        }
+        });
+    }
 });
         
         //Generating the Nonogram 
