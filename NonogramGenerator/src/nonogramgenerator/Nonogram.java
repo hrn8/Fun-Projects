@@ -5,6 +5,7 @@
  */
 package nonogramgenerator;
 
+import java.awt.Color;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,8 +23,9 @@ public class Nonogram implements Serializable{
     private int length = 0;
     private int width = 0;
     private int LengthData[][], WidthData[][], finalLengthHolder, finalWidthHolder;
+    private Color colorHolder[][];
     
-    Nonogram(String s, boolean [][] temp, int le, int wi, int LData[][], int WData[][], int finalLHolder, int finalWHolder){
+    Nonogram(String s, boolean [][] temp, int le, int wi, int LData[][], int WData[][], int finalLHolder, int finalWHolder, Color color[][]){
         this.name = s;
         this.markers = temp;
         this.length = le;
@@ -32,6 +34,7 @@ public class Nonogram implements Serializable{
         this.WidthData = WData;
         this.finalLengthHolder = finalLHolder;
         this.finalWidthHolder = finalWHolder;
+        this.colorHolder = color; 
     }
 
     Nonogram() {
@@ -80,5 +83,9 @@ public class Nonogram implements Serializable{
     
     public boolean getValue(int lengthIndex, int widthIndex){
         return this.markers[lengthIndex][widthIndex];
+    }
+    
+    public Color getColor(int le, int wi){
+        return colorHolder[le][wi];
     }
  }

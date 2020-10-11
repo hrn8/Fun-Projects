@@ -173,12 +173,14 @@ public class NonogramGenerator extends Application{
             System.out.println(ex);
             fileOpened = false;
             boolean[][] temp = new boolean[1][1];
+            Color[][] temp2 = new Color[1][1];
             temp[0][0] = true;
+            temp2[0][0] = Color.black; 
             int[][] tempData = new int[1][1];
             tempData[0][0] = 1;
             int[][] tempData2 = new int[1][1];
             tempData[0][0] = 1;
-            Nonogram tempNono = new Nonogram("FileFailed", temp, 1, 1, tempData, tempData, 1, 1);
+            Nonogram tempNono = new Nonogram("FileFailed", temp, 1, 1, tempData, tempData, 1, 1, temp2);
             dataHolder.add(tempNono);
             NonogramNameHolder.add(tempNono.toString());
         }
@@ -922,6 +924,11 @@ public class NonogramGenerator extends Application{
             
             
             boolean[][] Checker = new boolean[wi][le];
+            Color[][] colorSetter = new Color[wi][le];
+            
+            for(int k = 0; k < le; k++)
+                for(int j = 0; j < wi; j++)
+                    colorSetter[k][j] = Color.white;
             
             //Generating the Nonogram
             for (int i = 0;i < width; i++){
@@ -945,19 +952,25 @@ public class NonogramGenerator extends Application{
                     xStart = Math.min(xStart,100 + movement*i);
                     yStart = Math.max(yStart, 100 + movement*k);
 
+                    
+                    
+                    
                     //Black = selected marker, White = not-selected marker. Flip is the method that changes it.
                     temp.addMouseListener(new MouseAdapter(){
                         public void mouseClicked(MouseEvent e){
                             Checker[ii][kk] = flip(Checker[ii][kk]);
 
-                            if (Checker[ii][kk])
+                            if (Checker[ii][kk]){
                                 temp.setBackground(currentColor);
-                            else if (!Checker[ii][kk])
-                                temp.setBackground(Color.white);
-                            
-                            testGrid.setFocusable(true);
-                            testGrid.requestFocusInWindow();
+                                colorSetter[ii][kk] = currentColor;
                             }
+                                
+                            else if (!Checker[ii][kk]){
+                                temp.setBackground(Color.white);
+                                colorSetter[ii][kk] = Color.white;
+                            }
+                                
+                           }
                        });
 
                     testGrid.add(temp);
@@ -968,8 +981,6 @@ public class NonogramGenerator extends Application{
             testGrid.setLayout(null); 
             frame.setVisible(false);
             testGrid.setResizable(false);
-            
-            
             
             testGrid.setFocusable(true);
             testGrid.requestFocusInWindow();
@@ -1106,10 +1117,32 @@ public class NonogramGenerator extends Application{
                     }
                     break;
                 }
-                   
+                
                 //Creating the Nonogram
-                Nonogram test = new Nonogram(nonoName, Checker, le, wi, LData, WData, finalLHolder, finalWHolder);
+                Nonogram test = new Nonogram(nonoName, Checker, le, wi, LData, WData, finalLHolder, finalWHolder, colorSetter);
                    
+//                File savedFile = new File("output.dat");
+//                FileOutputStream fos = null;
+//                ObjectOutputStream oos = null;
+//                
+//                try {
+//                    fos = new FileOutputStream(savedFile, true);
+//                } catch (FileNotFoundException ex) {
+//                    Logger.getLogger(NonogramGenerator.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                
+//                try {
+//                    oos = new ObjectOutputStream(fos);
+//                } catch (IOException ex) {
+//                    Logger.getLogger(NonogramGenerator.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                
+//                try {
+//                    oos.writeObject(test);
+//                } catch (IOException ex) {
+//                    Logger.getLogger(NonogramGenerator.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+
                 File savedFile = null;
                 URL savedURL = getClass().getResource("/OtherFiles/output.dat");
                    
@@ -1154,11 +1187,6 @@ public class NonogramGenerator extends Application{
                 dataHolder.add(test);
                 NonogramNameHolder.add(test.getName());
                 testGrid.setVisible(false);
-                    
-                //We only READ from the file once, thus we store it in the vector 
-                dataHolder.add(test);
-                NonogramNameHolder.add(test.getName());
-                testGrid.setVisible(false);
             }
                      
         });
@@ -1182,7 +1210,7 @@ public class NonogramGenerator extends Application{
                 JTextField[][] tpFields = new JTextField[le][le];
                 JTextField[][] spFields = new JTextField[wi][wi];
                 
-                URL playBackground = getClass().getResource("showdown3.gif");
+                URL playBackground = getClass().getResource("source2.gif");
                 ImageIcon img2 = new ImageIcon(playBackground);
                 JLabel background = new JLabel("", img2, JLabel.CENTER);
                 
@@ -1208,12 +1236,12 @@ public class NonogramGenerator extends Application{
                         temp.setLocation(200 + movement*i, 200 + movement*k);
                         xStart = Math.min(xStart,200 + movement*i);
                         yStart = Math.max(yStart, 200 + movement*k);
-
+                        
+                        Color myWhite = new Color(255, 255, 255);
+                        
                         temp.addMouseListener(new MouseAdapter(){
                            public void mouseClicked(MouseEvent e){
-
-                               boolean tweak = true;
-                               Checker[ii][kk] = flip(Checker[ii][kk]);
+                                Checker[ii][kk] = flip(Checker[ii][kk]);
 
                                if (Checker[ii][kk]){
                                    if(HardCoreEnabled && !officialNonogram.getValue(ii, kk)){
@@ -1231,9 +1259,11 @@ public class NonogramGenerator extends Application{
                                        temp.setBackground(Color.red);
                                        temp.setEnabled(false);
                                    }
-                                   else
-                                   temp.setBackground(Color.black);
-                               }
+                                   else if(Checker[ii][kk] && officialNonogram.getColor(ii, kk).getRGB() != myWhite.getRGB())
+                                       temp.setBackground(officialNonogram.getColor(ii, kk));
+                                   else if(Checker[ii][kk])
+                                       temp.setBackground(Color.black);
+                                }
                                    
                                else if (!Checker[ii][kk]){
                                    if(temp.getBackground() == Color.red)
@@ -1248,7 +1278,6 @@ public class NonogramGenerator extends Application{
               }
                 
             int divisor = Math.max(le, wi);
-            int movement = 360/divisor;
             
             for(int roW = 0; roW < wi; roW++){
                 for(int coM = 0; coM < officialNonogram.getMaxWidthHolder(); coM++){
@@ -1307,7 +1336,7 @@ public class NonogramGenerator extends Application{
                           dialog.setAlwaysOnTop(true);
                           dialog.setLocationRelativeTo(null);
                           JOptionPane.showMessageDialog(dialog, "You have solved the nonogram!");
-                          testGrid.setVisible(false); 
+                          testGrid.setVisible(false);
                       }
                       else{
                            final JOptionPane pane = new JOptionPane("Incorrect");
@@ -1457,14 +1486,5 @@ public class NonogramGenerator extends Application{
         officialSong.stop();
         officialSong = c;
         officialSong.loop(Clip.LOOP_CONTINUOUSLY);
-    }
-    
-    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {                                     
-        int i=evt.getKeyChar();
-        
-        if(i==KeyEvent.VK_SPACE)     //or any Key Constant
-        {
-            System.out.println("SPACEEE"); 
-        }
     }
 }
