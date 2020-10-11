@@ -928,7 +928,7 @@ public class NonogramGenerator extends Application{
             
             for(int k = 0; k < le; k++)
                 for(int j = 0; j < wi; j++)
-                    colorSetter[k][j] = Color.white;
+                    colorSetter[j][k] = Color.white;
             
             //Generating the Nonogram
             for (int i = 0;i < width; i++){
