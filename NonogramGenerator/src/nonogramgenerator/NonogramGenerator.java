@@ -58,6 +58,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -968,47 +969,32 @@ public class NonogramGenerator extends Application{
             frame.setVisible(false);
             testGrid.setResizable(false);
             
-            testGrid.addKeyListener(new KeyListener() {
-                @Override
-                public void keyTyped(KeyEvent e) {
-                    
-                }
-
-                @Override
-                public void keyReleased(KeyEvent e) {
-                    System.out.println("Aye!");
-                }
-
-                @Override
-                public void keyPressed(KeyEvent e) {
-                    if(e.getKeyChar() == '1')
-                        currentColor = Color.black;
-                    else if(e.getKeyChar() == '2')
-                        currentColor = Color.red;
-                    else if(e.getKeyChar() == '3')
-                        currentColor = Color.green;
-                    else if(e.getKeyChar() == '4')
-                        currentColor = Color.MAGENTA;
-                    else if(e.getKeyChar() == '5')
-                        currentColor = Color.blue;
-                    else if(e.getKeyChar() == '6')
-                        currentColor = Color.yellow;
-                    else if(e.getKeyChar() == '7')
-                        currentColor = Color.orange;
-                    else if(e.getKeyChar() == '8')
-                        currentColor = Color.cyan;
-                    }
-            });
+            
             
             testGrid.setFocusable(true);
             testGrid.requestFocusInWindow();
             
             //Button for finishing the Nonogram
+            JButton changeColor = new JButton("Color");
+            changeColor.setFont(mostWazted);
+            changeColor.setOpaque(true);
+            changeColor.setBounds(110, 520, 150, 30);
+            testGrid.add(changeColor); 
+            testGrid.setVisible(true);
+            
+            //Change the color of the markers
+            changeColor.addActionListener(new ActionListener() {
+                  @Override
+                  public void actionPerformed(java.awt.event.ActionEvent e) {
+                      currentColor = JColorChooser.showDialog(testGrid, "Choose marker color", Color.white);
+                  }
+            });
+            
             JButton finish = new JButton("Finalize");
             finish.setFont(mostWazted);
             finish.setOpaque(true);
             finish.setLocation(25 + le*70, 55 + wi*70);
-            finish.setBounds(225, 520, 150, 30);
+            finish.setBounds(360, 520, 150, 30);
             testGrid.add(finish); 
             testGrid.setVisible(true); 
             finish.addActionListener(new ActionListener(){
