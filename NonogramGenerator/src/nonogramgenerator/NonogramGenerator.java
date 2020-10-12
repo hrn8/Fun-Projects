@@ -462,6 +462,12 @@ public class NonogramGenerator extends Application{
         disabledIV.setX(-362);
         disabledIV.setY(320);
         
+        
+        Image viewNono = new Image("https://txt-dynamic.static.1001fonts.net/txt/dHRmLjcyLjAwMDAwMC5kbWxsZHlBLC4wAA,,/most-wazted.regular.png");
+        ImageView viewNonoIV = new ImageView(viewNono);
+        viewNonoIV.setScaleX(.7);
+        viewNonoIV.setScaleY(.7);
+
         //Image Conversion for Generating a Nonogram (in Solve Nonogram)
         Image generateNono = new Image("https://txt-dynamic.static.1001fonts.net/txt/dHRmLjcyLjAwMDAwMC5SMlZ1WlhKaGRHVWguMAAA/most-wazted.regular.png");
         ImageView generateNonoIV = new ImageView(generateNono);
@@ -514,6 +520,14 @@ public class NonogramGenerator extends Application{
         backButton.setMaxSize(100, 50);
         backButton.setMinSize(100, 50);
         backButton.setStyle("-fx-background-color: transparent;");
+        
+        //viewNonoIV
+        Button view = new Button("", viewNonoIV);
+        view.setLayoutX(70);
+        view.setLayoutY(180);
+        view.setMinSize(100, 50);
+        view.setMinSize(100, 50);
+        view.setStyle("-fx-background-color: transparent;");
         
         //Creating the Generate Button for the Solve Nonogram Scene
         Button generate = new Button("", generateNonoIV);
@@ -571,7 +585,7 @@ public class NonogramGenerator extends Application{
         
         //adding the components to the playScene
         Pane playLayout = new Pane(); 
-        playLayout.getChildren().addAll(HardCore, swingNode, NonoNameIV, NonoDataIV, LengthDataIV, WidthDataIV, HardCoreDataIV, HardCoreBioDataIV, disabledIV, backButton, generate, LengthHolder, WidthHolder);
+        playLayout.getChildren().addAll(HardCore, swingNode, NonoNameIV, NonoDataIV, LengthDataIV, WidthDataIV, HardCoreDataIV, HardCoreBioDataIV, disabledIV, backButton, view, generate, LengthHolder, WidthHolder);
         playLayout.setBackground(MenuBackground);
         playScene = new Scene(playLayout, 600, 600);
         
@@ -675,6 +689,19 @@ public class NonogramGenerator extends Application{
         backButton.setOnAction(e-> {Window.setScene(menuScene);
             backSound();
         });
+        
+        //Highlighted button effects
+        view.setOnMouseEntered(e ->
+	{   
+            toggleSound();
+            buttonHighlightedEffects(view);
+        });
+        
+        //Leaving the highlighed button effects
+	view.setOnMouseExited(e ->
+	{ 
+            buttonNegateEffects(view);
+	});
         
         //Highlighted button effects
         generate.setOnMouseEntered(e ->
@@ -1191,7 +1218,56 @@ public class NonogramGenerator extends Application{
                      
         });
     }
-});
+});     view.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int wi = officialNonogram.getWidth(); 
+                int le = officialNonogram.getLength();
+                boolean[][] Checker = new boolean[wi][le];
+                int xStart = 500, yStart = 0;
+                
+                URL playBackground = getClass().getResource("source2.gif");
+                ImageIcon img2 = new ImageIcon(playBackground);
+                JLabel background = new JLabel("", img2, JLabel.CENTER);
+                
+                JFrame testGrid = new JFrame("Nonogram View");
+                testGrid.setContentPane(background);
+                
+                    //Generating the Nonogram
+                for (int i = 0;i < wi; i++){
+                    for (int k = 0; k < le; k++){
+                        int movementIncrementor = 400;
+
+                        JButton temp = new JButton(); 
+                        temp.setForeground(Color.white);    //initial color of marker is white (false)
+                        temp.setBackground(officialNonogram.getColor(i, k));    //initial color of marker is white (false)
+                        javax.swing.border.Border border = BorderFactory.createLineBorder(Color.gray, 1);   //Style
+                        temp.setBorder(border);
+                        temp.setOpaque(true);
+                        int divisor = Math.max(le, wi);     //divisor/size is relevant to the biggest element (length/width)
+                        int movement = movementIncrementor/divisor; //movement relevant to size
+                        temp.setSize(movementIncrementor/divisor, movementIncrementor/divisor);
+                        temp.setLocation(112 + movement*i, 70+ movement*k); //movement relevant to size
+
+                        //movement relevant to size
+                        xStart = Math.min(xStart,100 + movement*i);
+                        yStart = Math.max(yStart, 100 + movement*k);
+                        temp.setEnabled(false);
+                        testGrid.add(temp);
+                    }
+                }
+            
+            JFrame frame = new JFrame();
+            testGrid.setLayout(null); 
+            frame.setVisible(false);
+            testGrid.setResizable(false);
+            testGrid.setFocusable(true);
+            testGrid.requestFocusInWindow();
+            testGrid.setSize(600,650); 
+            testGrid.setAlwaysOnTop(true);
+            testGrid.setVisible(true);
+            }
+        });
         
         //Generating the Nonogram 
         generate.setOnAction(new EventHandler<ActionEvent>(){
