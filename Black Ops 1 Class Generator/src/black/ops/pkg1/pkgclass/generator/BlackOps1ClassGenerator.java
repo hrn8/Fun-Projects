@@ -34,6 +34,7 @@ public class BlackOps1ClassGenerator {
     //JFrame elements
     private JButton generate;
     private JButton buttonForPicture;
+    private JButton camo; 
     private JButton primaryWeaponTitle;
     private JPanel panel;  
     private JButton at1;
@@ -75,6 +76,7 @@ public class BlackOps1ClassGenerator {
     public String[] Perk1 = {"Lightweight", "Scavenger", "Ghost", "Hardline", "Flak Jacket"};
     public String[] Perk2 = {"Hardened", "Scout", "Steady Aim", "Sleight of Hand", "Warlord"};
     public String[] Perk3 = {"Tactical Mask", "Marathon", "Ninja", "Second Chance", "Hacker"};
+    public String [] Camo = {"", "Dusty", "Ice", "Red", "Olive", "Nevada", "Sahara", "ERDL", "Tiger", "Berlin", "Warsaw", "Siberia", "Yukon", "Woodland", "Flora", "Gold"};
     
     //Fonts
     private Font blackOps;
@@ -220,7 +222,24 @@ public class BlackOps1ClassGenerator {
         imageHolder.put("Snub Nose", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/a/a1/Menu_mp_weapons_attach_snub.png/revision/latest/top-crop/width/360/height/450?cb=20120120043004")));
         imageHolder.put("SCOPE Variable Zoom", new ImageIcon(new URL("https://vignette.wikia.nocookie.net/callofduty/images/0/02/ELITE_Variable_Zoom.png/revision/latest?cb=20120106025851")));
         imageHolder.put("Background", new ImageIcon(new URL("https://steamcdn-a.akamaihd.net/steamcommunity/public/images/items/681660/3bc28a29bd3b701e8bda6c275b32d308381f0700.jpg")));
-    }   //SCOPE Infared Scope
+        
+        //Camos //{"Dusty", "Ice", "Red", "Olive", "Nevada", "Sahara", "ERDL", "Tiger", "Berlin", "Warsaw", "Siberia", "Yukon", "Woodland", "Flora", "Gold"};
+        imageHolder.put("Dusty", new ImageIcon(new URL("https://cod7.weebly.com/uploads/8/1/0/1/8101565/6067292.png")));
+        imageHolder.put("Ice", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/1/12/Menu_mp_weapons_camo_icy.png/revision/latest/scale-to-width-down/256?cb=20120120043042")));
+        imageHolder.put("Red", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/d/dd/Menu_mp_weapons_camo_mass.png/revision/latest/scale-to-width-down/256?cb=20120120043046")));
+        imageHolder.put("Olive", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/b/b3/Menu_mp_weapons_camo_olive.png/revision/latest/scale-to-width-down/256?cb=20120120043056")));
+        imageHolder.put("Nevada", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/0/00/Menu_mp_weapons_camo_nevada.png/revision/latest/scale-to-width-down/256?cb=20120120043051")));
+        imageHolder.put("Sahara", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/4/4d/Menu_mp_weapons_camo_sahara.png/revision/latest/scale-to-width-down/256?cb=20120120043101")));
+        imageHolder.put("ERDL", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/3/3f/Menu_mp_weapons_camo_erdl.png/revision/latest/scale-to-width-down/256?cb=20120120043028")));
+        imageHolder.put("Tiger", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/c/c0/Menu_mp_weapons_camo_tiger.png/revision/latest/scale-to-width-down/256?cb=20120120043110")));
+        imageHolder.put("Berlin", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/8/85/Menu_mp_weapons_camo_berlin.png/revision/latest/scale-to-width-down/256?cb=20120120043018")));
+        imageHolder.put("Warsaw", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/9/9b/Menu_mp_weapons_camo_warsaw.png/revision/latest/scale-to-width-down/256?cb=20120120043116")));
+        imageHolder.put("Siberia", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/a/a6/Menu_mp_weapons_camo_siberi.png/revision/latest/scale-to-width-down/256?cb=20120120043106")));
+        imageHolder.put("Yukon", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/5/5e/Menu_mp_weapons_camo_yukon.png/revision/latest/scale-to-width-down/256?cb=20120120043125")));
+        imageHolder.put("Woodland", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/5/5b/Menu_mp_weapons_camo_wood.png/revision/latest/scale-to-width-down/256?cb=20120120043121")));
+        imageHolder.put("Flora", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/8/8b/Menu_mp_weapons_camo_flora.png/revision/latest/scale-to-width-down/256?cb=20120120043033")));
+        imageHolder.put("Gold", new ImageIcon(new URL("https://static.wikia.nocookie.net/callofduty/images/b/bf/Menu_mp_weapons_camo_gold.png/revision/latest/scale-to-width-down/256?cb=20120120043037")));
+    }   
     
     public void populateKillstreaks(){
         killstreaks = new HashMap<Integer, String[]>();
@@ -371,6 +390,16 @@ public class BlackOps1ClassGenerator {
                     break;
             }
             
+            int camoIndex = (int)(Math.random()*15);
+            
+            if(camoIndex == 0){
+                camo.setIcon(null);
+            }
+            else{
+                 Image camo_image = imageHolder.get(Camo[camoIndex]).getImage();
+                 Image camo_image2 = camo_image.getScaledInstance(camo.getWidth(), camo.getHeight(), Image.SCALE_SMOOTH);
+                 camo.setIcon(new ImageIcon(camo_image2));
+            }
             
 
             PrimaryWeapon temp = weaponList[classIndex][gunIndex];
@@ -378,7 +407,7 @@ public class BlackOps1ClassGenerator {
             Image primary_image = imageHolder.get(temp.getName()).getImage();
             Image primary_image2 = primary_image.getScaledInstance(buttonForPicture.getWidth(), buttonForPicture.getHeight(), Image.SCALE_SMOOTH);
             buttonForPicture.setIcon(new ImageIcon(primary_image2));
-
+            
             String attachment1 = weaponList[classIndex][gunIndex].getAttachment();
             String attachment2; 
 
@@ -527,6 +556,7 @@ public class BlackOps1ClassGenerator {
     
     public void createWindow(){
         frame.add(buttonForPicture);
+        frame.add(camo);
         frame.add(primaryWeaponTitle);
         frame.add(panel);  
         frame.setSize(600, 600);  
@@ -569,7 +599,7 @@ public class BlackOps1ClassGenerator {
             GraphicsEnvironment.getLocalGraphicsEnvironment();
             blackOps = Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("BlackOpsOne-Regular.ttf")).deriveFont(25f);
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getResourceAsStream("BlackOpsOne-Regular.ttf")));
-            blackOpsSmall = blackOps.deriveFont(20f);
+            blackOpsSmall = blackOps.deriveFont(16f);
         } catch (IOException|FontFormatException e) {
             System.out.println(e);
         }
@@ -586,6 +616,13 @@ public class BlackOps1ClassGenerator {
         buttonForPicture.setOpaque(true);
         buttonForPicture.setContentAreaFilled(false);
         buttonForPicture.setSize(250, 114);
+        
+        camo = new JButton();
+        camo.setVerticalAlignment(SwingConstants.BOTTOM);
+        camo.setBorder(new EmptyBorder(0, 0, 0, 0));
+        camo.setOpaque(true);
+        camo.setContentAreaFilled(false);
+        camo.setSize(250, 114);
         
         secondaryPictureButton = new JButton("");
         secondaryPictureButton.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -714,8 +751,6 @@ public class BlackOps1ClassGenerator {
         
         generate = new JButton("Generate");
         generate.setBorder(new EmptyBorder(0, 0, 0, 0));
-       // generate.setOpaque(false);
-        //generate.setContentAreaFilled(false);
         generate.setSize(80, 40);
         generate.setLocation(260, 520);
         
@@ -843,6 +878,12 @@ public class BlackOps1ClassGenerator {
         buttonForPicture.setText("AK-476");
         buttonForPicture.setSize(buttonForPicture.getWidth(), 114);
         buttonForPicture.setLocation(40, 20);
+        
+        Image camo_image = imageHolder.get("Gold").getImage();
+        Image camo_image2 = camo_image.getScaledInstance(camo.getWidth(), camo.getHeight(), Image.SCALE_SMOOTH);
+        camo.setIcon(new ImageIcon(camo_image2));
+        camo.setSize(camo.getWidth(), 74);
+        camo.setLocation(40, 40);
         
         Image secondary_image = imageHolder.get("Python").getImage();
         Image secondary_image2 = secondary_image.getScaledInstance(secondaryPictureButton.getWidth(), secondaryPictureButton.getHeight(), Image.SCALE_SMOOTH);
